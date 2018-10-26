@@ -29,7 +29,6 @@ typedef struct {
 /****************** TEST LIST KOSONG ******************/
 bool IsEmpty(List L) {
 /* Mengirim true jika list kosong. Lihat definisi di atas. */
-    return (First(L) == NULL && Last(L) == NULL);
 }
 
 
@@ -37,8 +36,6 @@ bool IsEmpty(List L) {
 void createList(List *L) {
 /* I.S. L sembarang  */
 /* F.S. Terbentuk list kosong. Lihat definisi di atas. */
-    First(*L) = NULL;
-    Last(*L) = NULL;
 }
 
 
@@ -48,12 +45,6 @@ address Allocation(infotype x) {
 /* Jika alokasi berhasil, maka address tidak nil. */
 /* Misalnya: menghasilkan P, maka Info(P)=X, Next(P)=Nil, Prev(P)=Nil */
 /* Jika alokasi gagal, mengirimkan Nil. */
-    address NewElmt;
-    NewElmt = (ElmtList*) malloc (sizeof(ElmtList));
-    Info(NewElmt) = x;
-    Next(NewElmt) = Nil;
-    Prev(NewElmt) = Nil;
-    return NewElmt;
 }
 
 void Deallocation(address hapus) {
@@ -69,14 +60,6 @@ address Search (List L, infotype X){
 /* Mencari apakah ada elemen list dengan Info(P)=X */
 /* Jika ada, mengirimkan address elemen tersebut. */
 /* Jika tidak ada, mengirimkan Nil */
-	address P = First(L);
-	while (P != Nil){
-		if (Info(P) == X){
-			return P;
-		}
-		P = Next(P);
-	}
-	return Nil;
 }
 
 
@@ -86,18 +69,6 @@ void InsertFirst(List *L, infotype x) {
 /* I.S. L mungkin kosong */
 /* F.S. Melakukan alokasi sebuah elemen dan */
 /* menambahkan elemen pertama dengan nilai X jika alokasi berhasil */
-    address NewElmt;
-    NewElmt = Allocation(x);
-    if (NewElmt != NULL) {
-        if(IsEmpty(*L)){
-        	First(*L) = NewElmt;
-        	Last(*L) = NewElmt;
-        } else{
-        	Next(NewElmt) = First(*L);
-        	Prev(First(*L)) = NewElmt;
-        	First(*L) = NewElmt;
-        }
-    }
 }
 
 void InsertLast(List *L, infotype x) {
@@ -105,17 +76,6 @@ void InsertLast(List *L, infotype x) {
 /* F.S. Melakukan alokasi sebuah elemen dan */
 /* menambahkan elemen list di akhir: elemen terakhir yang baru */
 /* bernilai X jika alokasi berhasil. Jika alokasi gagal: I.S.= F.S. */
-    address NewElmt;
-    NewElmt = Allocation(x);
-    if (NewElmt != NULL) {
-        if(IsEmpty(*L)){
-        	InsertFirst(L,x);
-        } else{
-        	Next(Last(*L)) = NewElmt;
-        	Prev(NewElmt) = Last(*L);
-        	Last(*L) = NewElmt;
-        }
-    }
 }
 
 
@@ -124,66 +84,30 @@ void InsertLast(List *L, infotype x) {
 void InsertFirst (List *L, address P){
 /* I.S. Sembarang, P sudah dialokasi  */
 /* F.S. Menambahkan elemen ber-address P sebagai elemen pertama */
-	if(IsEmpty(*L)){
-       	First(*L) = P;
-    	Last(*L) = P;
-    } else{
-       	Next(P) = First(*L);
-       	Prev(First(*L)) = P;
-       	First(*L) = P;
-    }
 }
 
 void InsertLast (List *L, address P){
 /* I.S. Sembarang, P sudah dialokasi  */
 /* F.S. P ditambahkan sebagai elemen terakhir yang baru */
-	if(IsEmpty(*L)){
-       	InsertFirst(L,P);
-    } else{
-       	Next(Last(*L)) = P;
-       	Prev(P) = Last(*L);
-       	Last(*L) = P;
-    }
 }
 
 void InsertAfter (List *L, address P, address Prec){
 /* I.S. Prec pastilah elemen list; P sudah dialokasi  */
 /* F.S. Insert P sebagai elemen sesudah elemen beralamat Prec */
-	if(Next(Prec) == Nil){
-		InsertLast(L,P);
-	}else{
-		Next(P) = Next(Prec);
-		Prev(P) = Prec;
-		Prev(Next(Prec))= P;
-		Next(Prec) = P;
-	}
 }
 
 void InsertBefore (List *L, address P, address Succ){
 /* I.S. Succ pastilah elemen list; P sudah dialokasi  */
 /* F.S. Insert P sebagai elemen sebelum elemen beralamat Succ */
-	if(Succ == First(*L)){
-		InsertFirst(L,P);
-	}else{
-		Next(Prev(Succ)) = P;
-		Prev(P) = Prev(Succ);
-		Next(P) = Succ;
-		Prev(Succ) = P;
-	}
 }
 
 
 /*** PENGHAPUSAN SEBUAH ELEMEN ***/
-
 void DelFirst (List *L, address *P){
 /* I.S. List tidak kosong */
 /* F.S. P adalah alamat elemen pertama list sebelum penghapusan */
 /*      Elemen list berkurang satu (mungkin menjadi kosong) */
 /* First element yg baru adalah suksesor elemen pertama yang lama */
-	*P = First(*L);
-	First(*L) = Next(*P);
-	Prev(First(*L)) = Nil;
-	Deallocation(*P);
 }
 
 void DelLast (List *L, address *P){
@@ -191,11 +115,6 @@ void DelLast (List *L, address *P){
 /* F.S. P adalah alamat elemen terakhir list sebelum penghapusan  */
 /*      Elemen list berkurang satu (mungkin menjadi kosong) */
 /* Last element baru adalah predesesor elemen pertama yg lama, jika ada */
-	*P = Last(*L);
-	Last(*L) = Prev(*P);
-	Next(Last(*L)) = Nil;
-	Prev(*P) = Nil;
-	Deallocation(*P);
 }
 
 
@@ -204,24 +123,12 @@ void DelAfter (List *L, address *Pdel, address Prec){
 /* I.S. List tidak kosong. Prec adalah anggota list. */
 /* F.S. Menghapus Next(Prec): */
 /*      Pdel adalah alamat elemen list yang dihapus  */
-	*Pdel = Next(Prec);
-	Next(Prec) = Next(*Pdel);
-	Prev(Next(*Pdel)) = Prec;
-	Prev(*Pdel) = Nil;
-	Next(*Pdel)= Nil;
-	Deallocation(*Pdel);
 }
 
 void DelBefore (List *L, address *Pdel, address Succ){
 /* I.S. List tidak kosong. Succ adalah anggota list. */
 /* F.S. Menghapus Prev(Succ): */
 /*      Pdel adalah alamat elemen list yang dihapus  */
-	*Pdel = Prev(Succ);
-	Next(Prev(*Pdel)) = Succ;
-	Prev(Succ) = Prev(*Pdel);
-	Prev(*Pdel) = Nil;
-	Next(*Pdel) = Nil;
-	Deallocation(*Pdel);
 }
 
 void DelP (List *L, infotype X){
@@ -230,17 +137,6 @@ void DelP (List *L, infotype X){
 /* maka P dihapus dari list dan didealokasi */
 /* Jika tidak ada elemen list dengan Info(P)=X, maka list tetap */
 /* List mungkin menjadi kosong karena penghapusan */
-	address P = Search(*L,X);
-	address prec = Prev(P);
-	if (P != Nil){
-		if(P == First(*L)){
-			DelFirst(L,&P);
-		}else if(P == Last(*L)){
-			DelLast(L,&P);
-		}else{
-			DelAfter(L,&P,prec);
-		}
-	}
 }
 
 
@@ -253,13 +149,13 @@ void PrintForward (List L){
 /* Jika list kosong : menulis [] */
 /* Tidak ada tambahan karakter apa pun di awal, akhir, atau di tengah */
 	cout<<"[";
-	if(!IsEmpty(L)){
-		address temp =First(L);
-		while(Next(temp)!=NULL){
-			cout<<Info(temp) <<", ";
-			temp = Next(temp);
+	if(...(a)...){
+		address temp = ...(b)...;
+		while(...(c)...){
+			cout<<...(d)...;
+			temp = ...(e)...;
 		}
-		cout<<Info(temp);
+		cout<<...(f)...;
 	}
 	cout<<"]"<<endl;
 }
@@ -272,13 +168,13 @@ void PrintBackward (List L){
 /* Jika list kosong : menulis [] */
 /* Tidak ada tambahan karakter apa pun di awal, akhir, atau di tengah */
 	cout<<"[";
-	if(!IsEmpty(L)){
-		address temp =Last(L);
-		while(Prev(temp)!=NULL){
+	if(...(g)...){
+		address temp = ...(h)...;
+		while(...(i)...){
 			cout<<Info(temp) <<", ";
-			temp = Prev(temp);
+			temp = ...(j)...;
 		}
-		cout<<Info(temp);
+		cout<<...(k)...;
 	}
 	cout<<"]"<<endl;
 }
