@@ -1,56 +1,41 @@
 int KonversiGanjil(List L, int x[]){
-	address P = First(L);
-	int i=0, j=7;
-	int sum=0, hasil = 0;
-	while(P != Nil){
-		if(x[i] == 1){
-			sum = Info(P);
-		}else{
-			sum =0;
-		}
-		hasil += sum;
-		cout << "2^"<<j <<" = " << sum<<endl;
-		j -= 2;
-		i+= 2;
-		P = Next(Next(P));
-	}
-	return hasil;
+	/* I.S. L berisi Bit bit biner dan x[i] berisi bilangan biner  */
+	/* Mengkonversi mulai dari Elemen pertama List, lalu ke elemen list selanjutnya*/
+	/* Hanya mengkonversi Element List yang memiliki nilai 2^bilangan ganjil*/
+	/* Membuat keluaran sesuai dengan test case. Contoh : 
+		2^7 = 128
+		2^5 = 32 
+		2^3 = 8 
+		2^1 = 2 
+	*/
+	/* F.S. Mengemabalikan nilai yang berisi jumlah dari hasil konversi tiap-tiap elemen (bit).
+		Misal dari contoh diatas jumlahnya adalah 170.		
+	*/
 }
 
 int KonversiGenap(List L, int x[]){
-	address P = Last(L);
-	int i=7, j=0;
-	int sum=0, hasil = 0;
-	while(P != Nil){
-		if(x[i] == 1){
-			sum = Info(P);
-		}else{
-			sum =0;
-		}
-		hasil += sum;
-		cout << "2^"<<j <<" = " << sum<<endl;
-		j += 2;
-		i -= 2;
-		P = Prev(Prev(P));
-	}
-	return hasil;
+	/* I.S. L berisi Bit bit biner dan x[i] berisi bilangan biner  */
+	/* Mengkonversi mulai dari Elemen List terakhir, lalu ke elemen list sebelumnya*/
+	/* Hanya mengkonversi Element List yang memiliki nilai 2^bilangan genap*/
+	/* Membuat keluaran sesuai dengan test case. Contoh :
+		2^0 = 1 
+		2^2 = 4 
+		2^4 = 16 
+		2^6 = 6
+	*/
+	/* F.S. Mengemabalikan nilai yang berisi jumlah dari hasil konversi tiap-tiap elemen (bit).
+	Misal dari contoh diatas jumlahnya adalah 27.
+	*/
 }
 
 int main() {
 	List L;
 	address ps;
 	createList(&L);
-	InsertLast(&L,128);
-	InsertLast(&L,64);
-	InsertLast(&L,32);
-	InsertLast(&L,16);
-	InsertLast(&L,8);
-	InsertLast(&L,4);
-	InsertLast(&L,2);
-	InsertLast(&L,1);
+	/* Insert List awal berturut turut 2^7 2^6 2^5 2^4 2^3 2^2 2^1 2^0 */
 	int x[8];
-	for (int i =0;i<8;i++){
-		cin >> x[i];
-	}
-	cout << KonversiGanjil(L,x) + KonversiGenap(L,x);
+	/*Input x[i]*/
+	/*Menampilkan hasil konversi ganjil ditambah hasil konversi genap*/
+
+	return 0;
 } 
